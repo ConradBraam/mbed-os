@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#ifdef DEVICE_FLASH
+#if DEVICE_FLASH
 
 #include "FlashIAPBlockDevice.h"
 #include "mbed_critical.h"
 
 #include "mbed.h"
-
+using namespace mbed;
 #include <inttypes.h>
 
 #define FLASHIAP_READ_SIZE 1
