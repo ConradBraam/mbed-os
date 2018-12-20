@@ -1,5 +1,6 @@
 /* mbed Microcontroller Library
  * Copyright (c) 2006-2013 ARM Limited
+ * SPDX-License-Identifier: Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +19,7 @@
 
 #include "platform/platform.h"
 
-#if defined (DEVICE_SERIAL) || defined(DOXYGEN_ONLY)
+#if DEVICE_SERIAL || defined(DOXYGEN_ONLY)
 
 #include "platform/Callback.h"
 #include "hal/serial_api.h"
@@ -136,6 +137,16 @@ public:
     {
         attach(callback(obj, method), type);
     }
+
+    /** Generate a break condition on the serial line
+     *  NOTE: Clear break needs to run at least one frame after set_break is called
+     */
+    void set_break();
+
+    /** Clear a break condition on the serial line
+     *  NOTE: Should be run at least one frame after set_break is called
+     */
+    void clear_break();
 
     /** Generate a break condition on the serial line
      */

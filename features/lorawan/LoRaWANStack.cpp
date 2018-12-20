@@ -310,6 +310,7 @@ int16_t LoRaWANStack::handle_tx(const uint8_t port, const uint8_t *data,
     if (_link_check_requested) {
         _loramac.setup_link_check_request();
     }
+    _qos_cnt = 1;
 
     lorawan_status_t status;
 
@@ -613,6 +614,8 @@ void LoRaWANStack::post_process_tx_with_reception()
                          _loramac.get_device_class() == CLASS_A ? "A" : "C");
                 _ctrl_flags &= ~TX_DONE_FLAG;
                 _ctrl_flags |= RETRY_EXHAUSTED_FLAG;
+                _loramac.post_process_mcps_req();
+                make_tx_metadata_available();
                 state_controller(DEVICE_STATE_STATUS_CHECK);
             }
         }

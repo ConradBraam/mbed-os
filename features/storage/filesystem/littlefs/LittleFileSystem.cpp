@@ -20,7 +20,7 @@
 #include "lfs_util.h"
 #include "MbedCRC.h"
 
-using namespace mbed;
+namespace mbed {
 
 extern "C" void lfs_crc(uint32_t *crc, const void *buffer, size_t size)
 {
@@ -500,6 +500,17 @@ off_t LittleFileSystem::file_size(fs_file_t file)
     return lfs_toerror(res);
 }
 
+int LittleFileSystem::file_truncate(fs_file_t file, off_t length)
+{
+    lfs_file_t *f = (lfs_file_t *)file;
+    _mutex.lock();
+    LFS_INFO("file_truncate(%p)", file);
+    int err = lfs_file_truncate(&_lfs, f, length);
+    LFS_INFO("file_truncate -> %d", lfs_toerror(err));
+    _mutex.unlock();
+    return lfs_toerror(err);
+}
+
 
 ////// Dir operations //////
 int LittleFileSystem::dir_open(fs_dir_t *dir, const char *path)
@@ -577,3 +588,4 @@ void LittleFileSystem::dir_rewind(fs_dir_t dir)
     _mutex.unlock();
 }
 
+} // namespace mbed
